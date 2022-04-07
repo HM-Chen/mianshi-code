@@ -6,7 +6,7 @@ public class alibaba {
         Scanner in = new Scanner(System.in);
         String str = in.nextLine();
         int len = str.length();
-        int max_nums = 2;
+        int max_nums = 1;
         int[] nums = new int[len];
         for(int i = 0; i < len; i++){
             if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
@@ -17,9 +17,9 @@ public class alibaba {
             max_nums = Math.max(max_nums,nums[i]);
         }
         for(int j = max_nums+1; j <= 16; j++){
-            int res = 0;
+            long res = 0;
             for(int k = 0; k < len; k++){
-                res += Math.pow(j,len-1-k);
+                res += (long)nums[k]*Math.pow(j,len-1-k);
             }
             System.out.println(res);
         }
