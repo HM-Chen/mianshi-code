@@ -13,6 +13,10 @@ public class minNums {
         for(Map.Entry<Integer,Integer> entry : map.entrySet()){
             int count = 0;
             int num = entry.getValue();
+            if(num < 2){
+                res = -1;
+                break;
+            }
             while(num % 3 != 0){
                 num -= 2;
                 count += 1;
