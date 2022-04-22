@@ -16,12 +16,10 @@ public class path_Btree {
         int[] tree_father = {1, 1, 2, 0, 0, 4, 5};
         int[] path = {1, 1};
         int[] tree_son = {5, 3, 0};
-        TreeNode root_father = new TreeNode(0);
-        reconstruct(root_father,tree_father);
-        dfs(root_father,tree_father);
-        TreeNode root_son = new TreeNode(0);
-        reconstruct(root_son,tree_son);
-        dfs(root_son,tree_son);
+        TreeNode root_father = new TreeNode(tree_father[0]);
+        reconstruct(root_father, 0, tree_father);
+        TreeNode root_son = new TreeNode(tree_son[0]);
+        reconstruct(root_son, 0, tree_son);
         TreeNode locate = root_father;
         int i = 1;
         while(i < path.length - 1){
@@ -41,7 +39,7 @@ public class path_Btree {
 
 
     }
-    public static void reconstruct(TreeNode root, int[] treeArray){
+    public static void reconstruct(TreeNode root, int k, int[] treeArray){
         int len = treeArray.length;
         Deque<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
@@ -49,26 +47,22 @@ public class path_Btree {
             int size = queue.size();
             for(int i = 0; i < size; i++){
                 TreeNode node = queue.poll();
-                if(2*node.val+1 < len && treeArray[2* node.val+1] != 0){
-                    TreeNode left = new TreeNode(2*node.val+1);
-                    node.left = left;
-                    queue.offer(left);
+                if(k < len-2){
+                    k++;
+                    if(treeArray[k] != 0){
+                        TreeNode left = new TreeNode(treeArray[k]);
+                        node.left = left;
+                        queue.offer(left);
+                    }
+                    k++;
+                    if(treeArray[k] != 0){
+                        TreeNode right = new TreeNode(treeArray[k]);
+                        node.right = right;
+                        queue.offer(right);
+                    }
                 }
-                if(2*node.val+2 < len && treeArray[2*node.val+2] != 0){
-                    TreeNode right = new TreeNode(2*node.val+2);
-                    node.right = right;
-                    queue.offer(right);
-                }
+
             }
-        }
-    }
-    public static void  dfs(TreeNode root,int[] treeArray){
-        root.val = treeArray[root.val];
-        if(root.left != null){
-            dfs(root.left,treeArray);
-        }
-        if(root.right != null){
-            dfs(root.right,treeArray);
         }
     }
     public static List<Integer> out(TreeNode root){
