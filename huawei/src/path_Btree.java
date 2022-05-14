@@ -13,7 +13,7 @@ class TreeNode{
 
 public class path_Btree {
     public static void main(String[] args) {
-        int[] tree_father = {1, 1, 2, 0, 0, 4, 5};
+        int[] tree_father = {1, 1, 2, 0, 0, 4, 5,1,2,3,4};
         int[] path = {1, 1};
         int[] tree_son = {5, 3, 0};
         TreeNode root_father = new TreeNode(tree_father[0]);
