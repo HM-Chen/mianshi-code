@@ -2,50 +2,43 @@ import java.util.*;
 
 public class reconstructBtree {
     public static void main(String[] args) {
-        int[] preorder = {3,9,20,15,7};
-        int[] inorder = {9,3,15,20,7};
-        TreeNode root = buildTree(preorder,inorder);
-        System.out.println(root);
+        int[] preorder = {1,1,2};
+        int[] inorder = {1,2,1};
+        List<TreeNode> ans = buildTree(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+        System.out.println("------------------");
     }
-    public static TreeNode buildTree(int[] preorder, int[] inorder) {
-        int lengIn = inorder.length;
-        if(preorder.length == 0){
-            return null;
+
+    public static List<TreeNode> buildTree(int[] preorder, int[] inorder, int pl, int pr, int il, int ir) {
+        if(pl > pr){
+            List<TreeNode> tmp=new ArrayList<>();
+            tmp.add(null);
+            return tmp;
         }
-        TreeNode root = new TreeNode(preorder[0]);
-        int index = 0;
-        for(int i = 0; i < lengIn; i++){
-            if(preorder[0] == inorder[i]){
-                index = i;
-                break;
+        List<TreeNode> res = new ArrayList<>();
+        for(int i = il; i <= ir; i++){
+            if(preorder[pl] == inorder[i]){
+                List<TreeNode> leftChilds = buildTree(preorder, inorder, pl+1, pl+i-il, il, i-1);
+                List<TreeNode> rightChilds = buildTree(preorder, inorder, pl+i-il+1, pr, i+1, ir);
+                for(TreeNode leftChild : leftChilds){
+                    for(TreeNode rightChild : rightChilds){
+                        TreeNode node = new TreeNode(preorder[pl]);
+                        node.left = leftChild;
+                        node.right = rightChild;
+                        res.add(node);
+                    }
+                }
             }
         }
-        if(index != 0){
-            int[] leftPre = new int[index];
-            int[] leftIn = new int[index];
-            for(int i = 0; i < index; i++){
-                leftPre[i] = preorder[i+1];
-                leftIn[i] = inorder[i];
-            }
-            root.left = buildTree(leftPre,leftIn);
-        }
-        if(index != lengIn-1){
-            int[] rightPre = new int[lengIn-index-1];
-            int[] rightIn = new int[lengIn-index-1];
-            for(int i = 0; i < lengIn-index-1; i++){
-                rightPre[i] = preorder[i+index+1];
-                rightIn[i] = inorder[i+index+1];
-            }
-            root.right = buildTree(rightPre,rightIn);
-        }
-        return root;
+
+        return res;
     }
+
 }
 
 class TreeNode {
     int val;
-    TreeNode left;
-    TreeNode right;
+    TreeNode left=null;
+    TreeNode right=null;
     TreeNode() {}
     TreeNode(int val) { this.val = val; }
     TreeNode(int val, TreeNode left, TreeNode right) {
